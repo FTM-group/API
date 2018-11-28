@@ -9,14 +9,11 @@ header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispo
 if (isset($_GET) && !empty($_GET)){
     include_once 'connexion.php';
 
-    if (isset($_GET['nickname'])){
-        $sql = $bdd->prepare("SELECT nickname_user FROM user WHERE nickname_user ='".$_GET['nickname']."'");
+    if (isset($_GET['login'])){
+        $sql = $bdd->prepare("SELECT login_user FROM user WHERE login_user ='".$_GET['login']."'");
         $sql->execute();
 
         $result = $sql->fetch();
-
-//    var_dump($sql);
-//    var_dump($result);
 
         if ($result){
             echo json_encode(array('status'=>'exist'));
@@ -51,13 +48,13 @@ elseif(!empty(json_decode( file_get_contents( 'php://input' ), true ))){
 
     include_once 'connexion_user.php';
 
-    $nickname = $data['nickname'];
+    $login = $data['login'];
     $password = $data['password'];
     $hashed = hash('sha512', $password);
     $email = $data['email'];
-    $token = hash('sha512', $nickname.$email);
+    $token = hash('sha512', $login.$email);
 
-    $sql = "INSERT INTO user (nickname_user, password_user, email_user, token_user) VALUES ('".$nickname."', '".$hashed."', '".$email."', '".$token."')";
+    $sql = "INSERT INTO user (login_user, password_user, email_user, token_user) VALUES ('".$login."', '".$hashed."', '".$email."', '".$token."')";
 
     try{
         $stmt = $bdd->prepare($sql);
@@ -69,8 +66,8 @@ elseif(!empty(json_decode( file_get_contents( 'php://input' ), true ))){
         $error = $e->getCode();
         $errorMessage = $e->getMessage();
         if ($error == "23000"){
-            if (strpos($errorMessage, 'nickname_user')) {
-                echo json_encode(array('status'=>'error:nickname'));
+            if (strpos($errorMessage, 'login_user')) {
+                echo json_encode(array('status'=>'error:login'));
             }
             else if (strpos($errorMessage, 'email_user')) {
                 echo json_encode(array('status'=>'error:email'));

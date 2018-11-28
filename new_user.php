@@ -52,9 +52,10 @@ elseif(!empty(json_decode( file_get_contents( 'php://input' ), true ))){
     $password = $data['password'];
     $hashed = hash('sha512', $password);
     $email = $data['email'];
-    $token = hash('sha512', $login.$email);
+//    $token = hash('sha512', $login.$email);
 
-    $sql = "INSERT INTO user (login_user, password_user, email_user, token_user) VALUES ('".$login."', '".$hashed."', '".$email."', '".$token."')";
+//    $sql = "INSERT INTO user (login_user, password_user, email_user, token_user) VALUES ('".$login."', '".$hashed."', '".$email."', '".$token."')";
+    $sql = "INSERT INTO user (login_user, password_user, email_user) VALUES ('".$login."', '".$hashed."', '".$email."')";
 
     try{
         $stmt = $bdd->prepare($sql);
@@ -72,9 +73,9 @@ elseif(!empty(json_decode( file_get_contents( 'php://input' ), true ))){
             else if (strpos($errorMessage, 'email_user')) {
                 echo json_encode(array('status'=>'error:email'));
             }
-            else if (strpos($errorMessage, 'token_user')) {
-                echo json_encode(array('status'=>'error:token_user'));
-            }
+//            else if (strpos($errorMessage, 'token_user')) {
+//                echo json_encode(array('status'=>'error:token_user'));
+//            }
         }
     }
 }

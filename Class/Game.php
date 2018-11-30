@@ -37,11 +37,24 @@ class Game{
 
     function insertGame($name, $file, $genre, $nbPlayers, $headline){
 
-        $uploaddir = 'Thumbnails';
-        $uploadfile = $uploaddir . basename($file['name']);
+        $uploaddir = 'Thumbnails/';
+        $extension = explode('.', $file['name'])[1];
+
+        $key = '';
+        $keys = array_merge(range(0, 9), range('a', 'z'));
+
+        for ($i = 0; $i < 28; $i++) {
+            $key .= $keys[array_rand($keys)];
+        }
+
+        $name_thumbnail = $key.".".$extension;
+
+        $uploadfile = $uploaddir . $name_thumbnail;
 
         if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
             include_once 'Bdd/connexion_user.php';
+
+            $weight = $file['size'];
 
             try{
                 $sql = $bdd->prepare('INSERT INTO thumbnail (name_thumbnail, weight_thumbnail) VALUES (:name_thumbnail, :weight)');

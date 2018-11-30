@@ -25,5 +25,10 @@ header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispo
     elseif (isset($_GET['headline'])){
 
     }
+    elseif(isset($_FILES['file'])){
+        include_once 'Class/Game.php';
+        $gameProvider = new Game();
+        echo $gameProvider->insertGame($_POST['nameGame'], $_FILES['file'], "1", "2", "1");
+    }
 
 ?>

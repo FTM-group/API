@@ -38,9 +38,9 @@ class Game{
     function insertGame($name, $file, $genre, $nbPlayers, $headline){
 
         $uploaddir = 'Thumbnails';
-        $uploadfile = $uploaddir . basename($file['userfile']['name']);
+        $uploadfile = $uploaddir . basename($file['name']);
 
-        if (move_uploaded_file($file['userfile']['tmp_name'], $uploadfile)) {
+        if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
             include_once 'Bdd/connexion_user.php';
 
             try{

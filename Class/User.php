@@ -78,10 +78,10 @@ class User{
             include_once 'Bdd/deconnexion.php';
             if ($error == "23000"){
                 if (strpos($errorMessage, 'login_user')) {
-                    return json_encode(array('status'=>'error:login'));
+                    return json_encode(array('status'=>'error', 'error' => 'login'));
                 }
                 else if (strpos($errorMessage, 'email_user')) {
-                    return json_encode(array('status'=>'error:email'));
+                    return json_encode(array('status'=>'error', 'error' => 'email'));
                 }
             }
         }

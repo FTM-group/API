@@ -134,4 +134,114 @@ class Game{
             }
         }
     }
+
+    function onOffGame($id){
+        include 'Bdd/connexion.php';
+
+        try{
+            $sql = $bdd->prepare('SELECT on_off_game FROM game WHERE id_game = :id_game');
+            $sql->bindParam(':id_game', $id);
+            $sql->execute();
+            $result = $sql->fetch();
+
+            include_once 'Bdd/deconnexion.php';
+
+            if ($result['on_off_game'] == 1){
+                $onOffGame = 0;
+            }
+            else{
+                $onOffGame = 1;
+            }
+
+            include 'Bdd/connexion_gold.php';
+
+            try{
+                $sql = $bdd->prepare('UPDATE game SET on_off_game = :on_off_game WHERE id_game = :id_game');
+                $sql->bindParam(':on_off_game', $onOffGame);
+                $sql->bindParam(':id_game', $id);
+                $sql->execute();
+
+                include_once 'Bdd/deconnexion.php';
+
+                return json_encode(array('status' => 'success'));
+            }
+            catch(Exception $e){
+                $error = $e->getCode();
+                $errorMessage = $e->getMessage();
+                include 'Bdd/deconnexion.php';
+
+                if ($error == "23000"){
+                    if (strpos($errorMessage, 'id_game')) {
+                        return json_encode(array('status'=>'error', 'error' => 'id_game'));
+                    }
+                }
+            }
+        }
+        catch(Exception $e){
+            $error = $e->getCode();
+            $errorMessage = $e->getMessage();
+            include 'Bdd/deconnexion.php';
+
+            if ($error == "23000"){
+                if (strpos($errorMessage, 'id_game')) {
+                    return json_encode(array('status'=>'error', 'error' => 'id_game'));
+                }
+            }
+        }
+    }
+
+    function headlineGame($id){
+        include 'Bdd/connexion.php';
+
+        try{
+            $sql = $bdd->prepare('SELECT headline_game FROM game WHERE id_game = :id_game');
+            $sql->bindParam(':id_game', $id);
+            $sql->execute();
+            $result = $sql->fetch();
+
+            include_once 'Bdd/deconnexion.php';
+
+            if ($result['headline_game'] == 1){
+                $headlineGame = 0;
+            }
+            else{
+                $headlineGame = 1;
+            }
+
+            include 'Bdd/connexion_gold.php';
+
+            try{
+                $sql = $bdd->prepare('UPDATE game SET headline_game = :headline_game WHERE id_game = :id_game');
+                $sql->bindParam(':headline_game', $headlineGame);
+                $sql->bindParam(':id_game', $id);
+                $sql->execute();
+
+                include_once 'Bdd/deconnexion.php';
+
+                return json_encode(array('status' => 'success'));
+            }
+            catch(Exception $e){
+                $error = $e->getCode();
+                $errorMessage = $e->getMessage();
+                include 'Bdd/deconnexion.php';
+
+                if ($error == "23000"){
+                    if (strpos($errorMessage, 'id_game')) {
+                        return json_encode(array('status'=>'error', 'error' => 'id_game'));
+                    }
+                }
+            }
+        }
+        catch(Exception $e){
+            $error = $e->getCode();
+            $errorMessage = $e->getMessage();
+            include 'Bdd/deconnexion.php';
+
+            if ($error == "23000"){
+                if (strpos($errorMessage, 'id_game')) {
+                    return json_encode(array('status'=>'error', 'error' => 'id_game'));
+                }
+            }
+        }
+    }
 }

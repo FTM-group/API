@@ -2,29 +2,19 @@
 
 class Thumbnail {
     function addThumbnail($file){
-        $uploaddir = 'Thumbnails/';
-        $extension = explode('.', $file['name'])[1];
+        $urlForThumbnail = $this->getUrlForThumbnail($file['name']);
+        $uploadFile = $urlForThumbnail['upload_file'];
+        $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
-        $key = '';
-        $keys = array_merge(range(0, 9), range('a', 'z'));
-
-        for ($i = 0; $i < 28; $i++) {
-            $key .= $keys[array_rand($keys)];
-        }
-
-        $name_thumbnail = $key.".".$extension;
-
-        $uploadfile = $uploaddir . $name_thumbnail;
-
-        if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
+        if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
             include 'Bdd/connexion_user.php';
 
             $weight = $file['size'] / 1000;
 
             try{
                 $sql = $bdd->prepare('INSERT INTO thumbnail (name_thumbnail, weight_thumbnail) VALUES (:name_thumbnail, :weight_thumbnail)');
-                $sql->bindParam(':name_thumbnail', $name_thumbnail);
-                $sql->bindParam(':weight', $weight);
+                $sql->bindParam(':name_thumbnail', $nameThumbnail);
+                $sql->bindParam(':weight_thumbnail', $weight);
                 $sql->execute();
                 $lastId = $bdd->lastInsertId();
                 include_once 'Bdd/deconnexion.php';
@@ -34,6 +24,8 @@ class Thumbnail {
             catch (Exception $e){
                 $error = $e->getCode();
                 $errorMessage = $e->getMessage();
+
+                var_dump($errorMessage);
                 include_once 'Bdd/deconnexion.php';
                 if ($error == "23000"){
                     if (strpos($errorMessage, 'name_thumbnail')) {
@@ -60,29 +52,19 @@ class Thumbnail {
 
             include_once 'Bdd/deconnexion.php';
             if($result){
-                $uploaddir = 'Thumbnails/';
-                $extension = explode('.', $file['name'])[1];
+                $urlForThumbnail = $this->getUrlForThumbnail($file['name']);
+                $uploadFile = $urlForThumbnail['upload_file'];
+                $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
-                $key = '';
-                $keys = array_merge(range(0, 9), range('a', 'z'));
-
-                for ($i = 0; $i < 28; $i++) {
-                    $key .= $keys[array_rand($keys)];
-                }
-
-                $name_thumbnail = $key.".".$extension;
-
-                $uploadfile = $uploaddir . $name_thumbnail;
-
-                if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
+                if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
                     include 'Bdd/connexion_gold.php';
 
                     $weight = $file['size'] / 1000;
 
-                    if (@unlink($uploaddir.$result['name_thumbnail'])){
+                    if (@unlink($this->getUrlForThumbnail().$result['name_thumbnail'])){
                         try{
                             $sql = $bdd->prepare('UPDATE thumbnail SET name_thumbnail = :name_thumbnail, weight_thumbnail = :weight_thumbnail WHERE id_thumbnail = :id_thumbnail');
-                            $sql->bindParam(':name_thumbnail', $name_thumbnail);
+                            $sql->bindParam(':name_thumbnail', $nameThumbnail);
                             $sql->bindParam(':weight_thumbnail', $weight);
                             $sql->bindParam(':id_thumbnail', $id);
                             $sql->execute();
@@ -122,5 +104,29 @@ class Thumbnail {
         catch (Exception $e){
             return array('status' => 'error', 'error' => 'check');
         }
+    }
+
+    function getUrlForThumbnail($fileName = false){
+        $uploadDir = 'Thumbnails/';
+
+        if ($fileName){
+            $extension = explode('.', $fileName)[1];
+
+            $key = '';
+            $keys = array_merge(range(0, 9), range('a', 'z'));
+
+            for ($i = 0; $i < 28; $i++) {
+                $key .= $keys[array_rand($keys)];
+            }
+
+            $nameThumbnail = $key.".".$extension;
+            $uploadFile = $uploadDir . $nameThumbnail;
+
+            return array('upload_file' => $uploadFile, 'name_thumbnail' => $nameThumbnail) ;
+        }
+        else{
+            return $uploadDir;
+        }
+
     }
 }

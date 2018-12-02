@@ -7,8 +7,6 @@ header('Access-Control-Allow-Methods: POST');
 //header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
 
-var_dump($_FILES);
-
     if(isset($_GET['all'])){
         include_once 'Class/Game.php';
         $gameProvider = new Game();
@@ -27,8 +25,14 @@ var_dump($_FILES);
     elseif (isset($_GET['headline'])){
 
     }
+    //on off game
+    elseif (isset($_POST['switch']) && isset($_POST['id'])){
+        include_once 'Class/Game.php';
+        $gameProvider = new Game();
+        echo $gameProvider->onOffGame($_POST['id']);
+    }
     //update game
-    elseif(isset($_POST['id'])){
+    elseif(isset($_POST['update']) && isset($_POST['id'])){
         include_once 'Class/Game.php';
         $gameProvider = new Game();
 
@@ -55,7 +59,8 @@ var_dump($_FILES);
     elseif(isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] != 4){
         include_once 'Class/Game.php';
         $gameProvider = new Game();
-        echo $gameProvider->insertGame($_POST['nameGame'], $_FILES['thumbnail'], "1", "2", "1");
+        
+        echo $gameProvider->insertGame($_POST['name'], $_FILES['thumbnail'], "1", "2", "1");
     }
 
 

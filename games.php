@@ -59,9 +59,12 @@ header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispo
     elseif(isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] != 4){
         include_once 'Class/Game.php';
         $gameProvider = new Game();
-        
+
         echo $gameProvider->insertGame($_POST['name'], $_FILES['thumbnail'], "1", "2", "1");
     }
-
-
+//
+//include 'Class/Game.php';
+//    $test = new Game();
+//    $result = $test->getLast();
+//    var_dump($result);
 ?>

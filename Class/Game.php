@@ -38,7 +38,24 @@ class Game{
     function getLast(){
         include('Bdd/connexion.php');
 
-        $sql = $bdd->prepare("SELECT * FROM game g ORDER BY date_add_game DESC LIMIT 10");
+        $sql = $bdd->prepare("SELECT * FROM game ORDER BY date_add_game DESC LIMIT 10");
+        $sql->execute();
+
+        $results = $sql->fetchAll();
+        include 'Bdd/deconnexion.php';
+
+        if ($results){
+            return json_encode(array('status'=>'success', 'games'=> $results));
+        }
+        else{
+            return json_encode(array('status'=>'error'));
+        }
+    }
+
+    function getHeadline(){
+        include('Bdd/connexion.php');
+
+        $sql = $bdd->prepare("SELECT * FROM game WHERE headline_game = 1 ORDER BY date_add_game DESC LIMIT 10");
         $sql->execute();
 
         $results = $sql->fetchAll();

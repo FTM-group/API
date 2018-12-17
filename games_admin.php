@@ -10,7 +10,7 @@ if (isset($_POST['switch']) && isset($_POST['id'])){
     echo $gameProvider->onOffGame($_POST['id']);
 }
 
-// Edit game
+// get oneGame (modal)
 elseif(isset($_GET['update']) && isset($_GET['id'])){
     include_once 'Class/Game.php';
     $gameProvider = new Game();

@@ -1,6 +1,24 @@
 <?php
 
 class Game{
+    function getOne($idGame){
+        include 'Bdd/connexion.php';
+
+        $sql = $bdd->prepare("SELECT * FROM game WHERE id_game=:id_game");
+        $sql->bindParam(':id_game', $idGame);
+        $sql->execute();
+
+        $result = $sql->fetch();
+        include 'Bdd/deconnexion.php';
+
+        if ($result){
+            return json_encode(array('status'=>'success', 'game' => $result));
+        }
+        else{
+            return json_encode(array('status'=>'error'));
+        }
+    }
+
     function getAll(){
         include 'Bdd/connexion.php';
 

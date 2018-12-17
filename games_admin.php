@@ -9,11 +9,20 @@ if (isset($_POST['switch']) && isset($_POST['id'])){
 
     echo $gameProvider->onOffGame($_POST['id']);
 }
+
+// Edit game
+elseif(isset($_GET['update']) && isset($_GET['id'])){
+    include_once 'Class/Game.php';
+    $gameProvider = new Game();
+
+    echo $gameProvider->getOne($_GET['id']);    
+}
+
 //update game
 elseif(isset($_POST['update']) && isset($_POST['id'])){
     include_once 'Class/Game.php';
     $gameProvider = new Game();
-
+    
     $data = array(
         'id_game' => $_POST['id'],
         'name_game' => $_POST['name'],
@@ -32,6 +41,7 @@ elseif(isset($_POST['update']) && isset($_POST['id'])){
 
     echo $gameProvider->updateGame($data, $file);
 }
+
 //insert game
 elseif(isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] != 4){
     include_once 'Class/Game.php';

@@ -11,10 +11,10 @@ class Game{
         $result = $sql->fetch();
         include 'Bdd/deconnexion.php';
 
-        if ($result){
+        if ($result) {
             return json_encode(array('status'=>'success', 'game' => $result));
         }
-        else{
+        else {
             return json_encode(array('status'=>'error'));
         }
     }

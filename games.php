@@ -27,4 +27,5 @@ header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispo
         $gameProvider = new Game();
         echo $gameProvider->getHeadline();
     }
+
 ?>

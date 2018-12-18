@@ -4,7 +4,10 @@ class Game{
     function getOne($idGame){
         include 'Bdd/connexion.php';
 
-        $sql = $bdd->prepare("SELECT * FROM game WHERE id_game=:id_game");
+        $sql = $bdd->prepare("SELECT id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
+                              FROM game g
+                              JOIN thumbnail t ON g.id_thumbnail=t.id_thumbnail
+                              WHERE g.id_game=:id_game");
         $sql->bindParam(':id_game', $idGame);
         $sql->execute();
 
@@ -22,7 +25,10 @@ class Game{
     function getAll(){
         include 'Bdd/connexion.php';
 
-        $sql = $bdd->prepare("SELECT * FROM game ORDER BY name_game");
+        $sql = $bdd->prepare("SELECT id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
+                              FROM game g
+                              JOIN thumbnail t ON g.id_thumbnail=t.id_thumbnail
+                              ORDER BY name_game");
         $sql->execute();
 
         $results = $sql->fetchAll();
@@ -39,7 +45,12 @@ class Game{
     function getTop(){
         include('Bdd/connexion.php');
 
-        $sql = $bdd->prepare("SELECT * FROM game g JOIN matchmaking_archive ma ON g.id_game = ma.id_game ORDER BY name_game LIMIT 10");
+        $sql = $bdd->prepare("SELECT id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
+                              FROM game g
+                              JOIN thumbnail t ON g.id_thumbnail=t.id_thumbnail
+                              JOIN matchmaking_archive ma ON g.id_game = ma.id_game 
+                              ORDER BY name_game 
+                              LIMIT 10");
         $sql->execute();
 
         $results = $sql->fetchAll();
@@ -56,7 +67,11 @@ class Game{
     function getLast(){
         include('Bdd/connexion.php');
 
-        $sql = $bdd->prepare("SELECT * FROM game ORDER BY date_add_game DESC LIMIT 10");
+        $sql = $bdd->prepare("SELECT id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
+                              FROM game g
+                              JOIN thumbnail t ON g.id_thumbnail=t.id_thumbnail
+                              ORDER BY date_add_game DESC 
+                              LIMIT 10");
         $sql->execute();
 
         $results = $sql->fetchAll();
@@ -73,7 +88,12 @@ class Game{
     function getHeadline(){
         include('Bdd/connexion.php');
 
-        $sql = $bdd->prepare("SELECT * FROM game WHERE headline_game = 1 ORDER BY date_add_game DESC LIMIT 10");
+        $sql = $bdd->prepare("SELECT id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
+                              FROM game g
+                              JOIN thumbnail t ON g.id_thumbnail=t.id_thumbnail
+                              WHERE headline_game = 1 
+                              ORDER BY date_add_game DESC 
+                              LIMIT 10");
         $sql->execute();
 
         $results = $sql->fetchAll();

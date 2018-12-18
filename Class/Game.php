@@ -45,7 +45,7 @@ class Game{
     function getTop(){
         include('Bdd/connexion.php');
 
-        $sql = $bdd->prepare("SELECT id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
+        $sql = $bdd->prepare("SELECT g.id_game, name_game, genre_game, number_players_game, date_add_game, headline_game, on_off_game, g.id_thumbnail, name_thumbnail
                               FROM game g
                               JOIN thumbnail t ON g.id_thumbnail=t.id_thumbnail
                               JOIN matchmaking_archive ma ON g.id_game = ma.id_game 

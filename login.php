@@ -10,7 +10,7 @@ $data = json_decode( file_get_contents( 'php://input' ), true );
 
 if ($data['login'] && $data['password']){
 
-    include_once 'Class/User.php';
+    include_once 'Model/User.php';
     $userProvider = new User();
     echo $userProvider->login($data['login'], $data['password']);
 

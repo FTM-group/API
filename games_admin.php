@@ -4,7 +4,7 @@ header('Access-Control-Allow-Methods: POST');
 
 //on off game
 if (isset($_POST['switch']) && isset($_POST['id'])){
-    include_once 'Class/Game.php';
+    include_once 'Model/Game.php';
     $gameProvider = new Game();
 
     echo $gameProvider->onOffGame($_POST['id']);
@@ -12,7 +12,7 @@ if (isset($_POST['switch']) && isset($_POST['id'])){
 
 // get oneGame (modal)
 elseif(isset($_GET['update']) && isset($_GET['id'])){
-    include_once 'Class/Game.php';
+    include_once 'Model/Game.php';
     $gameProvider = new Game();
     
     echo $gameProvider->getOne($_GET['id']);    
@@ -20,7 +20,7 @@ elseif(isset($_GET['update']) && isset($_GET['id'])){
 
 //update game
 elseif(isset($_POST['update']) && isset($_POST['id'])){
-    include_once 'Class/Game.php';
+    include_once 'Model/Game.php';
     $gameProvider = new Game();
 
     $data = array(
@@ -43,14 +43,14 @@ elseif(isset($_POST['update']) && isset($_POST['id'])){
 }
 //insert game
 elseif(isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] != 4){
-    include_once 'Class/Game.php';
+    include_once 'Model/Game.php';
     $gameProvider = new Game();
 
     echo $gameProvider->insertGame($_POST['name'], $_FILES['thumbnail'], "1", "2", "1");
 }
 
 //
-//include 'Class/Game.php';
+//include 'Model/Game.php';
 //    $test = new Game();
 //    $result = $test->getLast();
 //    var_dump($result);

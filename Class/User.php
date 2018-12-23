@@ -86,4 +86,35 @@ class User{
             }
         }
     }
+
+    function forgottenPassword($email){
+        if  ($this->getUserByEmail($email) != null){
+            include_once 'Email.php';
+            $emailProvider = new Email();
+            $status = $emailProvider->sendEmail($email, 2);
+            var_dump($status);
+            return $status;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getUserByEmail($email){
+        include 'Bdd/connexion.php';
+
+        $sql = $bdd->prepare("SELECT id_user FROM user WHERE email_user = :email_user");
+        $sql->bindParam(':email_user', $email);
+        $sql->execute();
+
+        $result = $sql->fetch();
+        include 'Bdd/deconnexion.php';
+
+        if ($result){
+            return $result['id_user'];
+        }
+        else{
+            return null;
+        }
+    }
 }

@@ -117,19 +117,17 @@ class Game{
                             return json_encode(array('status'=>'empty_genres'));
                         }
 
-                        foreach ($results as $value){
-                            $return[] = array(
-                                'id_game' => $value['id_game'],
-                                'name_game' => $value['name_game'],
-                                'number_players_game' => $value['number_players_game'],
-                                'date_add_game' => $value['date_add_game'],
-                                'headline_game' => $value['headline_game'],
-                                'on_off_game' => $value['on_off_game'],
-                                'id_thumbnail' => $value['id_thumbnail'],
-                                'name_thumbnail' => $value['name_thumbnail'],
-                                'genres' => $genres,
-                            );
-                        }
+                        $return[] = array(
+                            'id_game' => $value['id_game'],
+                            'name_game' => $value['name_game'],
+                            'number_players_game' => $value['number_players_game'],
+                            'date_add_game' => $value['date_add_game'],
+                            'headline_game' => $value['headline_game'],
+                            'on_off_game' => $value['on_off_game'],
+                            'id_thumbnail' => $value['id_thumbnail'],
+                            'name_thumbnail' => $value['name_thumbnail'],
+                            'genres' => $genres,
+                        );
                     }
                     return json_encode(array('status'=>'success', 'games'=> $return));
 
@@ -190,19 +188,17 @@ class Game{
                             return json_encode(array('status'=>'empty_genres'));
                         }
 
-                        foreach ($results as $value){
-                            $return[] = array(
-                                'id_game' => $value['id_game'],
-                                'name_game' => $value['name_game'],
-                                'number_players_game' => $value['number_players_game'],
-                                'date_add_game' => $value['date_add_game'],
-                                'headline_game' => $value['headline_game'],
-                                'on_off_game' => $value['on_off_game'],
-                                'id_thumbnail' => $value['id_thumbnail'],
-                                'name_thumbnail' => $value['name_thumbnail'],
-                                'genres' => $genres,
-                            );
-                        }
+                        $return[] = array(
+                            'id_game' => $value['id_game'],
+                            'name_game' => $value['name_game'],
+                            'number_players_game' => $value['number_players_game'],
+                            'date_add_game' => $value['date_add_game'],
+                            'headline_game' => $value['headline_game'],
+                            'on_off_game' => $value['on_off_game'],
+                            'id_thumbnail' => $value['id_thumbnail'],
+                            'name_thumbnail' => $value['name_thumbnail'],
+                            'genres' => $genres,
+                        );
                     }
                     return json_encode(array('status'=>'success', 'games'=> $return));
 
@@ -265,19 +261,17 @@ class Game{
                             return json_encode(array('status'=>'empty_genres'));
                         }
 
-                        foreach ($results as $value){
-                            $return[] = array(
-                                'id_game' => $value['id_game'],
-                                'name_game' => $value['name_game'],
-                                'number_players_game' => $value['number_players_game'],
-                                'date_add_game' => $value['date_add_game'],
-                                'headline_game' => $value['headline_game'],
-                                'on_off_game' => $value['on_off_game'],
-                                'id_thumbnail' => $value['id_thumbnail'],
-                                'name_thumbnail' => $value['name_thumbnail'],
-                                'genres' => $genres,
-                            );
-                        }
+                        $return[] = array(
+                            'id_game' => $value['id_game'],
+                            'name_game' => $value['name_game'],
+                            'number_players_game' => $value['number_players_game'],
+                            'date_add_game' => $value['date_add_game'],
+                            'headline_game' => $value['headline_game'],
+                            'on_off_game' => $value['on_off_game'],
+                            'id_thumbnail' => $value['id_thumbnail'],
+                            'name_thumbnail' => $value['name_thumbnail'],
+                            'genres' => $genres,
+                        );
                     }
                     return json_encode(array('status'=>'success', 'games'=> $return));
 

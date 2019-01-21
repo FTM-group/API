@@ -610,4 +610,35 @@ class Game{
             }
         }
     }
+
+    function getLastGamesWithNicknames($id_user){
+        try{
+            include('Bdd/connexion.php');
+
+            $sql = $bdd->prepare("SELECT DISTINCT G.id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail, nickname
+                              FROM game G
+                              JOIN thumbnail T ON G.id_thumbnail = T.id_thumbnail
+                              JOIN nickname_user_game NUG ON NUG.id_game = G.id_game
+                              JOIN matchmaking_archive MA ON MA.id_game = G.id_game
+                              JOIN matchmaking_players_archive MPA ON MPA.id_matchmaking_archive = MA.id_matchmaking_archive
+                              WHERE MPA.id_user = :id_user 
+                              ORDER BY MA.date_archive DESC 
+                              LIMIT 10");
+            $sql->bindParam(':id_user', $id_user);
+            $sql->execute();
+
+            $results = $sql->fetchAll();
+            include 'Bdd/deconnexion.php';
+
+            if ($results){
+                return json_encode(array('status'=>'success', 'data' => $results));
+            }
+            else{
+                return json_encode(array('status'=>'empty'));
+            }
+        }
+        catch(Exception $e){
+            return json_encode(array('status'=>'error'));
+        }
+    }
 }

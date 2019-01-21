@@ -8,13 +8,13 @@ header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispo
 
 if (isset($_GET) && !empty($_GET)){
     if (isset($_GET['login'])){
-        include_once 'Class/User.php';
+        include_once 'Model/User.php';
         $userProvider = new User();
         echo $userProvider->checkLogin($_GET['login']);
     }
 
     if (isset($_GET['email'])){
-        include_once 'Class/User.php';
+        include_once 'Model/User.php';
         $userProvider = new User();
         echo $userProvider->checkEmail($_GET['email']);
     }
@@ -26,7 +26,7 @@ elseif(!empty(json_decode( file_get_contents( 'php://input' ), true ))){
     $password = $data['password'];
     $email = $data['email'];
 
-    include_once 'Class/User.php';
+    include_once 'Model/User.php';
     $userProvider = new User();
     echo $userProvider->insertUser($login, $password, $email);
 

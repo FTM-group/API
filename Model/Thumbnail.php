@@ -7,11 +7,11 @@ class Thumbnail {
         $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
         if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-            include 'Bdd/connexion_user.php';
-
             $weight = $file['size'] / 1000;
 
             try{
+                include 'Bdd/connexion_user.php';
+
                 $sql = $bdd->prepare('INSERT INTO thumbnail (name_thumbnail, weight_thumbnail) VALUES (:name_thumbnail, :weight_thumbnail)');
                 $sql->bindParam(':name_thumbnail', $nameThumbnail);
                 $sql->bindParam(':weight_thumbnail', $weight);
@@ -25,7 +25,6 @@ class Thumbnail {
                 $error = $e->getCode();
                 $errorMessage = $e->getMessage();
 
-                var_dump($errorMessage);
                 include_once 'Bdd/deconnexion.php';
                 if ($error == "23000"){
                     if (strpos($errorMessage, 'name_thumbnail')) {
@@ -42,9 +41,9 @@ class Thumbnail {
     }
 
     function updateThumbnail($id, $file){
-        include 'Bdd/connexion.php';
-
         try{
+            include 'Bdd/connexion.php';
+
             $sql = $bdd->prepare('SELECT name_thumbnail FROM thumbnail WHERE id_thumbnail = :id_thumbnail');
             $sql->bindParam(':id_thumbnail', $id);
             $sql->execute();
@@ -57,7 +56,7 @@ class Thumbnail {
                 $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
                 if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-                    include 'Bdd/connexion_gold.php';
+                    include 'Bdd/connexion_white.php';
 
                     $weight = $file['size'] / 1000;
 

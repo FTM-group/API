@@ -5,7 +5,7 @@ class Game{
         try{
             include 'Bdd/connexion.php';
 
-            $sql = $bdd->prepare("SELECT G.id_game, name_game, number_players_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail, 
+            $sql = $bdd->prepare("SELECT G.id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail, 
                               (SELECT GEN.id_genre, name_genre FROM genre GEN JOIN game_genre GG ON GEN.id_genre = GG.id_genre WHERE GG.id_game = G.id_game) as genres
                               FROM game G
                               JOIN thumbnail T ON G.id_thumbnail = T.id_thumbnail
@@ -44,16 +44,39 @@ class Game{
                         return json_encode(array('status'=>'empty_genres'));
                     }
 
+                    include('Bdd/connexion.php');
+
+                    $sql = $bdd->prepare("SELECT game_nb_players
+                                          FROM game_nb_players 
+                                          WHERE id_game = :id_game");
+                    $sql->bindParam(':id_game', $result['id_game']);
+                    $sql->execute();
+
+                    $nbPlayersTab = $sql->fetchAll();
+                    include 'Bdd/deconnexion.php';
+
+                    if ($nbPlayersTab){
+                        $nbPlayers = array();
+                        foreach ($nbPlayersTab as $value){
+                            $nbPlayers[] = array(
+                                'nb_players' => $value['game_nb_players']
+                            );
+                        }
+                    }
+                    else{
+                        return json_encode(array('status'=>'empty_nb_players'));
+                    }
+
                     $return[] = array(
                         'id_game' => $result['id_game'],
                         'name_game' => $result['name_game'],
-                        'number_players_game' => $result['number_players_game'],
                         'date_add_game' => $result['date_add_game'],
                         'headline_game' => $result['headline_game'],
                         'on_off_game' => $result['on_off_game'],
                         'id_thumbnail' => $result['id_thumbnail'],
                         'name_thumbnail' => $result['name_thumbnail'],
                         'genres' => $genres,
+                        'nb_players' => $nbPlayers,
                     );
 
                     return json_encode(array('status'=>'success', 'games'=> $return));
@@ -77,7 +100,7 @@ class Game{
         try{
             include('Bdd/connexion.php');
 
-            $sql = $bdd->prepare("SELECT G.id_game, name_game, number_players_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail
+            $sql = $bdd->prepare("SELECT G.id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail
                               FROM game G
                               JOIN thumbnail T ON G.id_thumbnail=T.id_thumbnail
                               JOIN matchmaking_archive ma ON G.id_game = ma.id_game 
@@ -117,16 +140,39 @@ class Game{
                             return json_encode(array('status'=>'empty_genres'));
                         }
 
+                        include('Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT game_nb_players
+                                          FROM game_nb_players 
+                                          WHERE id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $nbPlayersTab = $sql->fetchAll();
+                        include 'Bdd/deconnexion.php';
+
+                        if ($nbPlayersTab){
+                            $nbPlayers = array();
+                            foreach ($nbPlayersTab as $value){
+                                $nbPlayers[] = array(
+                                    'nb_players' => $value['game_nb_players']
+                                );
+                            }
+                        }
+                        else{
+                            return json_encode(array('status'=>'empty_nb_players'));
+                        }
+
                         $return[] = array(
                             'id_game' => $result['id_game'],
                             'name_game' => $result['name_game'],
-                            'number_players_game' => $result['number_players_game'],
                             'date_add_game' => $result['date_add_game'],
                             'headline_game' => $result['headline_game'],
                             'on_off_game' => $result['on_off_game'],
                             'id_thumbnail' => $result['id_thumbnail'],
                             'name_thumbnail' => $result['name_thumbnail'],
                             'genres' => $genres,
+                            'nb_players' => $nbPlayers,
                         );
                     }
                     return json_encode(array('status'=>'success', 'games'=> $return));
@@ -149,7 +195,7 @@ class Game{
         try{
             include('Bdd/connexion.php');
 
-            $sql = $bdd->prepare("SELECT id_game, name_game, number_players_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail
+            $sql = $bdd->prepare("SELECT id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail
                               FROM game G
                               JOIN thumbnail T ON G.id_thumbnail = T.id_thumbnail
                               ORDER BY date_add_game DESC 
@@ -188,16 +234,39 @@ class Game{
                             return json_encode(array('status'=>'empty_genres'));
                         }
 
+                        include('Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT game_nb_players
+                                          FROM game_nb_players 
+                                          WHERE id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $nbPlayersTab = $sql->fetchAll();
+                        include 'Bdd/deconnexion.php';
+
+                        if ($nbPlayersTab){
+                            $nbPlayers = array();
+                            foreach ($nbPlayersTab as $value){
+                                $nbPlayers[] = array(
+                                    'nb_players' => $value['game_nb_players']
+                                );
+                            }
+                        }
+                        else{
+                            return json_encode(array('status'=>'empty_nb_players'));
+                        }
+
                         $return[] = array(
                             'id_game' => $result['id_game'],
                             'name_game' => $result['name_game'],
-                            'number_players_game' => $result['number_players_game'],
                             'date_add_game' => $result['date_add_game'],
                             'headline_game' => $result['headline_game'],
                             'on_off_game' => $result['on_off_game'],
                             'id_thumbnail' => $result['id_thumbnail'],
                             'name_thumbnail' => $result['name_thumbnail'],
                             'genres' => $genres,
+                            'nb_players' => $nbPlayers,
                         );
                     }
                     return json_encode(array('status'=>'success', 'games'=>$return));
@@ -221,7 +290,7 @@ class Game{
         try{
             include('Bdd/connexion.php');
 
-            $sql = $bdd->prepare("SELECT id_game, name_game, number_players_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail
+            $sql = $bdd->prepare("SELECT id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail
                               FROM game G
                               JOIN thumbnail T ON G.id_thumbnail=T.id_thumbnail
                               WHERE headline_game = 1 
@@ -261,16 +330,39 @@ class Game{
                             return json_encode(array('status'=>'empty_genres'));
                         }
 
+                        include('Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT game_nb_players
+                                          FROM game_nb_players 
+                                          WHERE id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $nbPlayersTab = $sql->fetchAll();
+                        include 'Bdd/deconnexion.php';
+
+                        if ($nbPlayersTab){
+                            $nbPlayers = array();
+                            foreach ($nbPlayersTab as $value){
+                                $nbPlayers[] = array(
+                                    'nb_players' => $value['game_nb_players']
+                                );
+                            }
+                        }
+                        else{
+                            return json_encode(array('status'=>'empty_nb_players'));
+                        }
+
                         $return[] = array(
                             'id_game' => $result['id_game'],
                             'name_game' => $result['name_game'],
-                            'number_players_game' => $result['number_players_game'],
                             'date_add_game' => $result['date_add_game'],
                             'headline_game' => $result['headline_game'],
                             'on_off_game' => $result['on_off_game'],
                             'id_thumbnail' => $result['id_thumbnail'],
                             'name_thumbnail' => $result['name_thumbnail'],
                             'genres' => $genres,
+                            'nb_players' => $nbPlayers,
                         );
                     }
                     return json_encode(array('status'=>'success', 'games'=> $return));

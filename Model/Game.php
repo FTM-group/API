@@ -641,4 +641,33 @@ class Game{
             return json_encode(array('status'=>'error'));
         }
     }
+
+    function getGamesWithNicknames($id_user){
+        try{
+            include('Bdd/connexion.php');
+
+            $sql = $bdd->prepare("SELECT DISTINCT G.id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail, nickname
+                              FROM game G
+                              JOIN thumbnail T ON G.id_thumbnail = T.id_thumbnail
+                              JOIN nickname_user_game NUG ON NUG.id_game = G.id_game
+                              WHERE NUG.id_user = :id_user 
+                              ORDER BY name_game DESC 
+                              ");
+            $sql->bindParam(':id_user', $id_user);
+            $sql->execute();
+
+            $results = $sql->fetchAll();
+            include 'Bdd/deconnexion.php';
+
+            if ($results){
+                return json_encode(array('status'=>'success', 'data' => $results));
+            }
+            else{
+                return json_encode(array('status'=>'empty'));
+            }
+        }
+        catch(Exception $e){
+            return json_encode(array('status'=>'error'));
+        }
+    }
 }

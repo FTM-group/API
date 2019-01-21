@@ -82,6 +82,30 @@ class Genre{
         }
     }
 
+    function addGenre($data){
+        try{
+            include 'Bdd/connexion_user.php';
+
+            $sql = $bdd->prepare("INSERT INTO genre(name_genre) VALUES (:name_genre)");
+            $sql->bindParam(':name_genre', $data['name_genre']);
+            $sql->execute();
+
+            include 'Bdd/deconnexion.php';
+
+            return array('status'=>'success');
+        }
+        catch(Exception $e){
+            $error = $e->getCode();
+            $errorMessage = $e->getMessage();
+
+            if ($error == "23000"){
+                if (strpos($errorMessage, 'name_genre')) {
+                    return array('status'=>'error', 'error' => 'name_genre');
+                }
+            }
+        }
+    }
+
     function updateGenre($id, $data){
         try{
             include 'Bdd/connexion_white.php';

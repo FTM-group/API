@@ -118,14 +118,14 @@ class Game{
                         }
 
                         $return[] = array(
-                            'id_game' => $value['id_game'],
-                            'name_game' => $value['name_game'],
-                            'number_players_game' => $value['number_players_game'],
-                            'date_add_game' => $value['date_add_game'],
-                            'headline_game' => $value['headline_game'],
-                            'on_off_game' => $value['on_off_game'],
-                            'id_thumbnail' => $value['id_thumbnail'],
-                            'name_thumbnail' => $value['name_thumbnail'],
+                            'id_game' => $result['id_game'],
+                            'name_game' => $result['name_game'],
+                            'number_players_game' => $result['number_players_game'],
+                            'date_add_game' => $result['date_add_game'],
+                            'headline_game' => $result['headline_game'],
+                            'on_off_game' => $result['on_off_game'],
+                            'id_thumbnail' => $result['id_thumbnail'],
+                            'name_thumbnail' => $result['name_thumbnail'],
                             'genres' => $genres,
                         );
                     }
@@ -189,18 +189,18 @@ class Game{
                         }
 
                         $return[] = array(
-                            'id_game' => $value['id_game'],
-                            'name_game' => $value['name_game'],
-                            'number_players_game' => $value['number_players_game'],
-                            'date_add_game' => $value['date_add_game'],
-                            'headline_game' => $value['headline_game'],
-                            'on_off_game' => $value['on_off_game'],
-                            'id_thumbnail' => $value['id_thumbnail'],
-                            'name_thumbnail' => $value['name_thumbnail'],
+                            'id_game' => $result['id_game'],
+                            'name_game' => $result['name_game'],
+                            'number_players_game' => $result['number_players_game'],
+                            'date_add_game' => $result['date_add_game'],
+                            'headline_game' => $result['headline_game'],
+                            'on_off_game' => $result['on_off_game'],
+                            'id_thumbnail' => $result['id_thumbnail'],
+                            'name_thumbnail' => $result['name_thumbnail'],
                             'genres' => $genres,
                         );
                     }
-                    return json_encode(array('status'=>'success', 'games'=> $return));
+                    return json_encode(array('status'=>'success', 'games'=>$return));
 
                 }
                 catch(Exception $e){
@@ -262,14 +262,14 @@ class Game{
                         }
 
                         $return[] = array(
-                            'id_game' => $value['id_game'],
-                            'name_game' => $value['name_game'],
-                            'number_players_game' => $value['number_players_game'],
-                            'date_add_game' => $value['date_add_game'],
-                            'headline_game' => $value['headline_game'],
-                            'on_off_game' => $value['on_off_game'],
-                            'id_thumbnail' => $value['id_thumbnail'],
-                            'name_thumbnail' => $value['name_thumbnail'],
+                            'id_game' => $result['id_game'],
+                            'name_game' => $result['name_game'],
+                            'number_players_game' => $result['number_players_game'],
+                            'date_add_game' => $result['date_add_game'],
+                            'headline_game' => $result['headline_game'],
+                            'on_off_game' => $result['on_off_game'],
+                            'id_thumbnail' => $result['id_thumbnail'],
+                            'name_thumbnail' => $result['name_thumbnail'],
                             'genres' => $genres,
                         );
                     }

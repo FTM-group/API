@@ -39,12 +39,12 @@ class Thumbnail {
         }
     }
 
-    function updateThumbnail($id, $file){
+    function updateThumbnail($idThumbnail, $file){
         try{
             include 'Bdd/connexion.php';
 
             $sql = $bdd->prepare('SELECT name_thumbnail FROM thumbnail WHERE id_thumbnail = :id_thumbnail');
-            $sql->bindParam(':id_thumbnail', $id);
+            $sql->bindParam(':id_thumbnail', $idThumbnail);
             $sql->execute();
             $result = $sql->fetch();
 
@@ -64,7 +64,7 @@ class Thumbnail {
                             $sql = $bdd->prepare('UPDATE thumbnail SET name_thumbnail = :name_thumbnail, weight_thumbnail = :weight_thumbnail WHERE id_thumbnail = :id_thumbnail');
                             $sql->bindParam(':name_thumbnail', $nameThumbnail);
                             $sql->bindParam(':weight_thumbnail', $weight);
-                            $sql->bindParam(':id_thumbnail', $id);
+                            $sql->bindParam(':id_thumbnail', $idThumbnail);
                             $sql->execute();
 
                             include_once 'Bdd/deconnexion.php';

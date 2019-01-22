@@ -558,6 +558,14 @@ class Game{
 
                         include_once 'Bdd/deconnexion.php';
 
+                        if ($file){
+                            include_once 'Model/Thumbnail.php';
+                            $thumbnailProvider = new Thumbnail();
+                            $thumbnail = $thumbnailProvider->updateThumbnail($data['id_thumbnail'], $file);
+
+                            return json_encode($thumbnail);
+                        }
+
                         return json_encode(array('status'=>'success'));
                     }
                     catch(Exception $e){
@@ -586,15 +594,6 @@ class Game{
                         return json_encode(array('status'=>'error', 'error' => 'id_thumbnail'));
                     }
                 }
-            }
-
-
-            if ($file){
-                include_once 'Model/Thumbnail.php';
-                $thumbnailProvider = new Thumbnail();
-                $thumbnail = $thumbnailProvider->updateThumbnail($data['id_thumbnail'], $file);
-
-                return json_encode($thumbnail);
             }
         }
         catch(Exception $e){

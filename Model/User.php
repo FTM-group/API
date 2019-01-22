@@ -92,7 +92,7 @@ class User{
         catch (Exception $e){
             $error = $e->getCode();
             $errorMessage = $e->getMessage();
-            include 'Bdd/deconnexion.php';
+
             if ($error == "23000"){
                 if (strpos($errorMessage, 'login_user')) {
                     return json_encode(array('status'=>'error', 'error' => 'login'));

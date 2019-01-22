@@ -26,8 +26,8 @@ elseif(isset($_POST['update']) && isset($_POST['id'])){
     $data = array(
         'id_game' => $_POST['id'],
         'name_game' => $_POST['name'],
-        'genre_game' => $_POST['genre'],
-        'number_players_game' => $_POST['numberPlayers'],
+        'genre_game' => $_POST['genres'],
+        'nb_max_players_game' => $_POST['nbMaxPlayers'],
         'headline_game' => $_POST['headline'],
         'on_off_game' => $_POST['onOff'],
         'id_thumbnail' => $_POST['idThumbnail']
@@ -47,7 +47,16 @@ elseif(isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] != 4){
     include_once 'Class/Game.php';
     $gameProvider = new Game();
 
-    echo $gameProvider->insertGame($_POST['name'], $_FILES['thumbnail'], "1", "2", "1");
+    $data = array(
+        'id_game' => $_POST['id'],
+        'name_game' => $_POST['name'],
+        'genres_game' => $_POST['genres'],
+        'nb_max_players_game' => $_POST['nbMaxPlayers'],
+        'headline_game' => $_POST['headline'],
+        'on_off_game' => $_POST['onOff'],
+    );
+
+    echo $gameProvider->insertGame($data, $_FILES['thumbnail']);
 }
 
 //

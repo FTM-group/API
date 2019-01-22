@@ -25,7 +25,6 @@ class Thumbnail {
                 $error = $e->getCode();
                 $errorMessage = $e->getMessage();
 
-                include_once 'Bdd/deconnexion.php';
                 if ($error == "23000"){
                     if (strpos($errorMessage, 'name_thumbnail')) {
                         return array('status'=>'error', 'error' => 'name_thumbnail');

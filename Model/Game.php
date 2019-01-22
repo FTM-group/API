@@ -381,25 +381,75 @@ class Game{
         }
     }
 
-    function insertGame($name, $file, $genre, $nbPlayers, $headline){
+    function insertGame($data, $file){
 
         include_once 'Model/Thumbnail.php';
         $thumbnailProvider = new Thumbnail();
         $thumbnail = $thumbnailProvider->addThumbnail($file);
 
         if ($thumbnail['status'] == 'success'){
-            include 'Bdd/connexion_user.php';
-
             try{
-                $sql = $bdd->prepare('INSERT INTO game (name_game, number_players_game, headline_game, id_thumbnail) VALUES (:name_game, :genre_game, :number_players_game, :headline_game, :id_thumbnail)');
-                $sql->bindParam(':name_game', $name);
-                $sql->bindParam(':genre_game', $genre);
-                $sql->bindParam(':number_players_game', $nbPlayers);
-                $sql->bindParam(':headline_game', $headline);
+                include 'Bdd/connexion_user.php';
+
+                $sql = $bdd->prepare('INSERT INTO game (name_game, headline_game, on_off_game, id_thumbnail) VALUES (:name_game, :headline_game, :on_off_game, :id_thumbnail)');
+                $sql->bindParam(':name_game', $data['name_game']);
+                $sql->bindParam(':headline_game', $data['headline_game']);
+                $sql->bindParam(':on_off_game', $data['on_off_game']);
                 $sql->bindParam(':id_thumbnail', $thumbnail['last_id']);
                 $sql->execute();
+                $lastId = $bdd->lastInsertId();
+
                 include 'Bdd/deconnexion.php';
-                return json_encode(array('status'=>'success'));
+
+                try{
+                    $sql_insert = "";
+                    foreach ($data['genres_game'] as $key => $value){
+                        $sql_insert .= "(:id_genre".$key.", :id_game".$key.")";
+                    }
+
+                    include 'Bdd/connexion_user.php';
+
+                    $sql = $bdd->prepare('INSERT INTO game_genre (id_genre, id_game) VALUES '.$sql_insert);
+                    foreach ($data['genres_game'] as $key => $value){
+                        $sql->bindParam(':id_genre'.$key, $value);
+                        $sql->bindParam(':id_game'.$key, $lastId);
+                    }
+                    $sql->execute();
+
+                    include 'Bdd/deconnexion.php';
+
+                    try{
+                        $sql_insert = "";
+                        foreach ($data['nb_max_players_game'] as $key => $value){
+                            $sql_insert .= "(:game_nb_max_players".$key.", :id_game".$key.")";
+                        }
+
+                        include 'Bdd/connexion_user.php';
+
+                        $sql = $bdd->prepare('INSERT INTO game_nb_max_players (game_nb_max_players, id_game) VALUES '.$sql_insert);
+                        foreach ($data['nb_max_players_game'] as $key => $value){
+                            $sql->bindParam(':game_nb_max_players'.$key, $value);
+                            $sql->bindParam(':id_game'.$key, $lastId);
+                        }
+                        $sql->execute();
+
+                        include 'Bdd/deconnexion.php';
+
+                        return json_encode(array('status'=>'success'));
+                    }
+                    catch (Exception $e){
+                        $error = $e->getCode();
+                        $errorMessage = $e->getMessage();
+                        include 'Bdd/deconnexion.php';
+                        return json_encode(array('status'=>'error', 'error' => 'nb_max_players'));
+                    }
+                }
+                catch (Exception $e){
+                    $error = $e->getCode();
+                    $errorMessage = $e->getMessage();
+                    include 'Bdd/deconnexion.php';
+                    return json_encode(array('status'=>'error', 'error' => 'genres'));
+                }
             }
             catch (Exception $e){
                 $error = $e->getCode();
@@ -408,12 +458,6 @@ class Game{
                 if ($error == "23000"){
                     if (strpos($errorMessage, 'name_game')) {
                         return json_encode(array('status'=>'error', 'error' => 'name_game'));
-                    }
-                    else if (strpos($errorMessage, 'genre_game')) {
-                        return json_encode(array('status'=>'error', 'error' => 'genre_game'));
-                    }
-                    else if (strpos($errorMessage, 'number_players_game')) {
-                        return json_encode(array('status'=>'error', 'error' => 'number_players_game'));
                     }
                     else if (strpos($errorMessage, 'headline_game')) {
                         return json_encode(array('status'=>'error', 'error' => 'headline_game'));
@@ -433,9 +477,8 @@ class Game{
         try{
             include 'Bdd/connexion_white.php';
 
-            $sql = $bdd->prepare('UPDATE game SET name_game = :name_game, number_players_game = :number_players_game, headline_game = :headline_game, on_off_game = :on_off_game WHERE id_game = :id_game');
+            $sql = $bdd->prepare('UPDATE game SET name_game = :name_game, headline_game = :headline_game, on_off_game = :on_off_game WHERE id_game = :id_game');
             $sql->bindParam(':name_game', $data['name_game']);
-            $sql->bindParam(':number_players_game', $data['number_players_game']);
             $sql->bindParam(':headline_game', $data['headline_game']);
             $sql->bindParam(':on_off_game', $data['on_off_game']);
             $sql->bindParam(':id_game', $data['id_game']);
@@ -443,6 +486,108 @@ class Game{
 
 
             include_once 'Bdd/deconnexion.php';
+
+            try{
+                $toDelete = array();
+
+                include 'Bdd/connexion.php';
+
+                $sql = $bdd->prepare('SELECT id_genre WHERE id_game = :id_game');
+                $sql->bindParam(':id_game', $data['id_game']);
+                $sql->execute();
+                $results = $sql->fetchAll();
+
+                foreach ($results as $value){
+                    if (!in_array($value, $data['genres'])){
+                        $toDelete[] = $value;
+                    }
+                }
+                foreach ($data['genres'] as $value){
+                    if(!in_array($value, $results)){
+                        $toAdd[] = $value;
+                    }
+                }
+
+                include_once 'Bdd/deconnexion.php';
+
+                try{
+                    $sql_delete = "";
+                    $nbToDelete = count($toDelete);
+                    $loop = 1;
+
+                    include 'Bdd/connexion.php';
+
+                    foreach ($toDelete as $key => $value){
+                        $sql_delete .= '(id_game = :id_game'.$key.' AND id_genre = :id_genre'.$key.')';
+                        $loop++;
+                        if ($loop != $nbToDelete){
+                            $sql_delete .= " OR ";
+                        }
+                    }
+
+                    $sql = $bdd->prepare('DELETE FROM game_genre WHERE '.$sql_delete);
+                    foreach ($toDelete as $key => $value) {
+                        $sql->bindParam(':id_game'.$key, $data['id_game']);
+                        $sql->bindParam(':id_genre'.$key, $value);
+                    }
+                    $sql->execute();
+
+                    include_once 'Bdd/deconnexion.php';
+
+                    try{
+                        $sql_add = "";
+                        $nbToAdd = count($toAdd);
+                        $loop = 1;
+
+                        include 'Bdd/connexion.php';
+
+                        foreach ($toAdd as $key => $value){
+                            $sql_add .= '(:id_game'.$key.', :id_genre'.$key.')';
+                            $loop++;
+                            if ($loop != $nbToAdd){
+                                $sql_add .= ", ";
+                            }
+                        }
+
+                        $sql = $bdd->prepare('INSERT INTO game_genre(id_game, id_genre) VALUES '.$sql_add);
+                        foreach ($toAdd as $key => $value) {
+                            $sql->bindParam(':id_game'.$key, $data['id_game']);
+                            $sql->bindParam(':id_genre'.$key, $value);
+                        }
+                        $sql->execute();
+
+                        include_once 'Bdd/deconnexion.php';
+
+                        return json_encode(array('status'=>'success'));
+                    }
+                    catch(Exception $e){
+                        $error = $e->getCode();
+                        $errorMessage = $e->getMessage();
+                        return json_encode(array('status'=>'error', 'error' => 'add_genres'));
+                    }
+                }
+                catch(Exception $e){
+                    $error = $e->getCode();
+                    $errorMessage = $e->getMessage();
+                    return json_encode(array('status'=>'error', 'error' => 'delete_genres'));
+                }
+            }
+            catch(Exception $e){
+                $error = $e->getCode();
+                $errorMessage = $e->getMessage();
+                if ($error == "23000"){
+                    if (strpos($errorMessage, 'id_game')) {
+                        return json_encode(array('status'=>'error', 'error' => 'id_game'));
+                    }
+                    else if (strpos($errorMessage, 'headline_game')) {
+                        return json_encode(array('status'=>'error', 'error' => 'headline_game'));
+                    }
+                    else if (strpos($errorMessage, 'id_thumbnail')) {
+                        return json_encode(array('status'=>'error', 'error' => 'id_thumbnail'));
+                    }
+                }
+            }
+
 
             if ($file){
                 include_once 'Model/Thumbnail.php';
@@ -455,14 +600,9 @@ class Game{
         catch(Exception $e){
             $error = $e->getCode();
             $errorMessage = $e->getMessage();
-            include 'Bdd/deconnexion.php';
-
             if ($error == "23000"){
                 if (strpos($errorMessage, 'name_game')) {
                     return json_encode(array('status'=>'error', 'error' => 'name_game'));
-                }
-                else if (strpos($errorMessage, 'number_players_game')) {
-                    return json_encode(array('status'=>'error', 'error' => 'number_players_game'));
                 }
                 else if (strpos($errorMessage, 'headline_game')) {
                     return json_encode(array('status'=>'error', 'error' => 'headline_game'));
@@ -510,7 +650,6 @@ class Game{
             catch(Exception $e){
                 $error = $e->getCode();
                 $errorMessage = $e->getMessage();
-                include 'Bdd/deconnexion.php';
 
                 if ($error == "23000"){
                     if (strpos($errorMessage, 'id_game')) {
@@ -522,7 +661,6 @@ class Game{
         catch(Exception $e){
             $error = $e->getCode();
             $errorMessage = $e->getMessage();
-            include 'Bdd/deconnexion.php';
 
             if ($error == "23000"){
                 if (strpos($errorMessage, 'id_game')) {
@@ -565,7 +703,6 @@ class Game{
             catch(Exception $e){
                 $error = $e->getCode();
                 $errorMessage = $e->getMessage();
-                include 'Bdd/deconnexion.php';
 
                 if ($error == "23000"){
                     if (strpos($errorMessage, 'id_game')) {
@@ -577,7 +714,6 @@ class Game{
         catch(Exception $e){
             $error = $e->getCode();
             $errorMessage = $e->getMessage();
-            include 'Bdd/deconnexion.php';
 
             if ($error == "23000"){
                 if (strpos($errorMessage, 'id_game')) {
@@ -587,17 +723,57 @@ class Game{
         }
     }
 
-    function deleteGame($id){
+    function deleteGame($id_game){
         try{
             include 'Bdd/connexion_gold.php';
 
-            $sql = $bdd->prepare("DELETE FROM game WHERE id_game = :id_game");
-            $sql->bindParam(':id_genre', $id);
+            $sql = $bdd->prepare("DELETE FROM game_genre WHERE id_game = :id_game");
+            $sql->bindParam(':id_game', $id_game);
             $sql->execute();
 
             include 'Bdd/deconnexion.php';
 
-            return array('status'=>'success');
+            try{
+                include 'Bdd/connexion_gold.php';
+
+                $sql = $bdd->prepare("DELETE FROM game_nb_max_players WHERE id_game = :id_game");
+                $sql->bindParam(':id_game', $id_game);
+                $sql->execute();
+
+                include 'Bdd/deconnexion.php';
+
+                try{
+                    include 'Bdd/connexion_gold.php';
+
+                    $sql = $bdd->prepare("DELETE FROM game WHERE id_game = :id_game");
+                    $sql->bindParam(':id_game', $id_game);
+                    $sql->execute();
+
+                    include 'Bdd/deconnexion.php';
+
+                    return array('status'=>'success');
+                }
+                catch(Exception $e){
+                    $error = $e->getCode();
+                    $errorMessage = $e->getMessage();
+
+                    if ($error == "23000"){
+                        if (strpos($errorMessage, 'id_game')) {
+                            return array('status'=>'error', 'error' => 'id_game');
+                        }
+                    }
+                }
+            }
+            catch(Exception $e){
+                $error = $e->getCode();
+                $errorMessage = $e->getMessage();
+
+                if ($error == "23000"){
+                    if (strpos($errorMessage, 'id_game')) {
+                        return array('status'=>'error', 'error' => 'id_game');
+                    }
+                }
+            }
         }
         catch(Exception $e){
             $error = $e->getCode();

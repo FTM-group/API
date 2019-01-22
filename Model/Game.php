@@ -59,12 +59,12 @@ class Game{
                         $nbPlayers = array();
                         foreach ($nbPlayersTab as $value){
                             $nbPlayers[] = array(
-                                'nb_players' => $value['game_nb_players']
+                                'nb_players' => $value['game_nb_max_players']
                             );
                         }
                     }
                     else{
-                        return json_encode(array('status'=>'empty_nb_players'));
+                        return json_encode(array('status'=>'empty_nb_max_players'));
                     }
 
                     $return[] = array(
@@ -155,12 +155,12 @@ class Game{
                             $nbPlayers = array();
                             foreach ($nbPlayersTab as $value){
                                 $nbPlayers[] = array(
-                                    'nb_players' => $value['game_nb_players']
+                                    'nb_players' => $value['game_nb_max_players']
                                 );
                             }
                         }
                         else{
-                            return json_encode(array('status'=>'empty_nb_players'));
+                            return json_encode(array('status'=>'empty_nb_max_players'));
                         }
 
                         $return[] = array(
@@ -249,12 +249,12 @@ class Game{
                             $nbPlayers = array();
                             foreach ($nbPlayersTab as $value){
                                 $nbPlayers[] = array(
-                                    'nb_players' => $value['game_nb_players']
+                                    'nb_players' => $value['game_nb_max_players']
                                 );
                             }
                         }
                         else{
-                            return json_encode(array('status'=>'empty_nb_players'));
+                            return json_encode(array('status'=>'empty_nb_max_players'));
                         }
 
                         $return[] = array(
@@ -345,12 +345,12 @@ class Game{
                             $nbPlayers = array();
                             foreach ($nbPlayersTab as $value){
                                 $nbPlayers[] = array(
-                                    'nb_players' => $value['game_nb_players']
+                                    'nb_players' => $value['game_nb_max_players']
                                 );
                             }
                         }
                         else{
-                            return json_encode(array('status'=>'empty_nb_players'));
+                            return json_encode(array('status'=>'empty_nb_max_players'));
                         }
 
                         $return[] = array(

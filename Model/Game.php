@@ -617,12 +617,12 @@ class Game{
         }
     }
 
-    function onOffGame($id){
+    function onOffGame($idGame){
         try{
             include 'Bdd/connexion.php';
 
             $sql = $bdd->prepare('SELECT on_off_game FROM game WHERE id_game = :id_game');
-            $sql->bindParam(':id_game', $id);
+            $sql->bindParam(':id_game', $idGame);
             $sql->execute();
             $result = $sql->fetch();
 
@@ -640,7 +640,7 @@ class Game{
             try{
                 $sql = $bdd->prepare('UPDATE game SET on_off_game = :on_off_game WHERE id_game = :id_game');
                 $sql->bindParam(':on_off_game', $onOffGame);
-                $sql->bindParam(':id_game', $id);
+                $sql->bindParam(':id_game', $idGame);
                 $sql->execute();
 
                 include_once 'Bdd/deconnexion.php';
@@ -670,12 +670,12 @@ class Game{
         }
     }
 
-    function headlineGame($id){
+    function headlineGame($idGame){
         try{
             include 'Bdd/connexion.php';
 
             $sql = $bdd->prepare('SELECT headline_game FROM game WHERE id_game = :id_game');
-            $sql->bindParam(':id_game', $id);
+            $sql->bindParam(':id_game', $idGame);
             $sql->execute();
             $result = $sql->fetch();
 
@@ -693,7 +693,7 @@ class Game{
             try{
                 $sql = $bdd->prepare('UPDATE game SET headline_game = :headline_game WHERE id_game = :id_game');
                 $sql->bindParam(':headline_game', $headlineGame);
-                $sql->bindParam(':id_game', $id);
+                $sql->bindParam(':id_game', $idGame);
                 $sql->execute();
 
                 include_once 'Bdd/deconnexion.php';
@@ -723,12 +723,12 @@ class Game{
         }
     }
 
-    function deleteGame($id_game){
+    function deleteGame($idGame){
         try{
             include 'Bdd/connexion_gold.php';
 
             $sql = $bdd->prepare("DELETE FROM game_genre WHERE id_game = :id_game");
-            $sql->bindParam(':id_game', $id_game);
+            $sql->bindParam(':id_game', $idGame);
             $sql->execute();
 
             include 'Bdd/deconnexion.php';
@@ -737,7 +737,7 @@ class Game{
                 include 'Bdd/connexion_gold.php';
 
                 $sql = $bdd->prepare("DELETE FROM game_nb_max_players WHERE id_game = :id_game");
-                $sql->bindParam(':id_game', $id_game);
+                $sql->bindParam(':id_game', $idGame);
                 $sql->execute();
 
                 include 'Bdd/deconnexion.php';
@@ -746,7 +746,7 @@ class Game{
                     include 'Bdd/connexion_gold.php';
 
                     $sql = $bdd->prepare("DELETE FROM game WHERE id_game = :id_game");
-                    $sql->bindParam(':id_game', $id_game);
+                    $sql->bindParam(':id_game', $idGame);
                     $sql->execute();
 
                     include 'Bdd/deconnexion.php';

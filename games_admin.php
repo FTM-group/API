@@ -1,6 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Methods: GET');
 
 //on off game
 if (isset($_POST['switch']) && isset($_POST['id'])){

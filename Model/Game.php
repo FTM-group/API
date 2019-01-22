@@ -46,8 +46,8 @@ class Game{
 
                     include('Bdd/connexion.php');
 
-                    $sql = $bdd->prepare("SELECT game_nb_players
-                                          FROM game_nb_players 
+                    $sql = $bdd->prepare("SELECT game_nb_max_players
+                                          FROM game_nb_max_players 
                                           WHERE id_game = :id_game");
                     $sql->bindParam(':id_game', $result['id_game']);
                     $sql->execute();
@@ -142,8 +142,8 @@ class Game{
 
                         include('Bdd/connexion.php');
 
-                        $sql = $bdd->prepare("SELECT game_nb_players
-                                          FROM game_nb_players 
+                        $sql = $bdd->prepare("SELECT game_nb_max_players
+                                          FROM game_nb_max_players 
                                           WHERE id_game = :id_game");
                         $sql->bindParam(':id_game', $result['id_game']);
                         $sql->execute();
@@ -236,8 +236,8 @@ class Game{
 
                         include('Bdd/connexion.php');
 
-                        $sql = $bdd->prepare("SELECT game_nb_players
-                                          FROM game_nb_players 
+                        $sql = $bdd->prepare("SELECT game_nb_max_players
+                                          FROM game_nb_max_players 
                                           WHERE id_game = :id_game");
                         $sql->bindParam(':id_game', $result['id_game']);
                         $sql->execute();
@@ -332,8 +332,8 @@ class Game{
 
                         include('Bdd/connexion.php');
 
-                        $sql = $bdd->prepare("SELECT game_nb_players
-                                          FROM game_nb_players 
+                        $sql = $bdd->prepare("SELECT game_nb_max_players
+                                          FROM game_nb_max_players 
                                           WHERE id_game = :id_game");
                         $sql->bindParam(':id_game', $result['id_game']);
                         $sql->execute();

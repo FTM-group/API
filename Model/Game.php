@@ -498,7 +498,7 @@ class Game{
                 $results = $sql->fetchAll();
 
                 foreach ($results as $value){
-                    if (!in_array($value, $data['genres'])){
+                    if (!in_array($value, $data['genres_game'])){
                         $toDelete[] = $value;
                     }
                 }

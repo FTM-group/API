@@ -26,7 +26,7 @@ elseif(isset($_POST['update']) && isset($_POST['id'])){
     $data = array(
         'id_game' => $_POST['id'],
         'name_game' => $_POST['name'],
-        'genre_game' => $_POST['genres'],
+        'genres_game' => $_POST['genres'],
         'nb_max_players_game' => $_POST['nbMaxPlayers'],
         'headline_game' => $_POST['headline'],
         'on_off_game' => $_POST['onOff'],

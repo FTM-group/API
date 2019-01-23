@@ -2,7 +2,7 @@
 
 class Score
 {
-    function addScore($data){
+    function insertScore($data){
         try{
             include 'Bdd/connexion_user.php';
 

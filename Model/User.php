@@ -75,7 +75,7 @@ class User{
 
     }
 
-    function insertUser($login, $password, $email){
+    function addUser($login, $password, $email){
         $hashed = hash('sha512', $password);
 
         try{

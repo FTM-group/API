@@ -10,14 +10,14 @@ class Thumbnail {
             $weight = $file['size'] / 1000;
 
             try{
-                include 'Bdd/connexion_user.php';
+                include '../Bdd/connexion_user.php';
 
                 $sql = $bdd->prepare('INSERT INTO thumbnail (name_thumbnail, weight_thumbnail) VALUES (:name_thumbnail, :weight_thumbnail)');
                 $sql->bindParam(':name_thumbnail', $nameThumbnail);
                 $sql->bindParam(':weight_thumbnail', $weight);
                 $sql->execute();
                 $lastId = $bdd->lastInsertId();
-                include_once 'Bdd/deconnexion.php';
+                include_once '../Bdd/deconnexion.php';
 
                 return array('status' => 'success', 'last_id' => $lastId);
             }
@@ -41,21 +41,21 @@ class Thumbnail {
 
     function updateThumbnail($idThumbnail, $file){
         try{
-            include 'Bdd/connexion.php';
+            include '../Bdd/connexion.php';
 
             $sql = $bdd->prepare('SELECT name_thumbnail FROM thumbnail WHERE id_thumbnail = :id_thumbnail');
             $sql->bindParam(':id_thumbnail', $idThumbnail);
             $sql->execute();
             $result = $sql->fetch();
 
-            include_once 'Bdd/deconnexion.php';
+            include_once '../Bdd/deconnexion.php';
             if($result){
                 $urlForThumbnail = $this->getUrlForThumbnail($file['name']);
                 $uploadFile = $urlForThumbnail['upload_file'];
                 $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
                 if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-                    include 'Bdd/connexion_white.php';
+                    include '../Bdd/connexion_white.php';
 
                     $weight = $file['size'] / 1000;
 
@@ -67,7 +67,7 @@ class Thumbnail {
                             $sql->bindParam(':id_thumbnail', $idThumbnail);
                             $sql->execute();
 
-                            include_once 'Bdd/deconnexion.php';
+                            include_once '../Bdd/deconnexion.php';
 
                             return array('status' => 'success');
                         }

@@ -4,16 +4,12 @@
 header('Access-Control-Allow-Methods: POST');
 //header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
-$data = json_decode( file_get_contents( 'php://input' ), true );
 
-//var_dump($data);
+if (isset($_POST['login']) && isset($_POST['password'])){
+    include_once '../Model/Admin.php';
+    $adminProvider = new Admin();
 
-if ($data['login'] && $data['password']){
-
-    include_once 'Model/User.php';
-    $userProvider = new User();
-    echo $userProvider->login($data['login'], $data['password']);
-
+    echo json_encode($adminProvider->login($data['login'], $data['password']));
 }
 
 

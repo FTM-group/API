@@ -28,7 +28,7 @@ class Email{
             return false;
         }
         else{
-            include 'Bdd/connexion_user.php';
+            include '../Bdd/connexion_user.php';
 
             include_once 'Ip.php';
             $ipProvider = new Ip();

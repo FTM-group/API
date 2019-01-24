@@ -128,7 +128,7 @@ class User{
         include '../Bdd/deconnexion.php';
 
         if ($result){
-            return $result['id_user'];
+            return array('user' => $result['id_user']);
         }
         else{
             return null;

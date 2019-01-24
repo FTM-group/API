@@ -30,3 +30,9 @@ elseif(isset($_POST['update_nickname']) && isset($_POST['id_user']) && isset($_P
 
     echo json_encode($userProvider->updateNickname($data));
 }
+elseif(isset($_GET['user'])){
+    include_once '../Model/User.php';
+    $userProvider = new User();
+
+    echo json_encode($userProvider->getUserByEmail($_GET['user']));
+}

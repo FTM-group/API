@@ -1,6 +1,6 @@
 <?php
 
-class Ip{
+class Ip {
     function get_ip() {
         // IP si internet partagé
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {

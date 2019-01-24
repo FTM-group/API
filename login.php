@@ -4,6 +4,7 @@
 header('Access-Control-Allow-Methods: POST');
 //header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
+
 $data = json_decode( file_get_contents( 'php://input' ), true );
 
 //var_dump($data);

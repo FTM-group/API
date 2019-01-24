@@ -134,4 +134,64 @@ class User{
             return null;
         }
     }
+
+    function addNickname($data){
+        try{
+            include 'connexion_user.php';
+
+            $sql = $bdd->prepare("INSERT INTO nickname_user_game (id_user, id_game, nickname) VALUES (:id_user, :id_game, :nickname)");
+            $sql->bindParam(':id_user', $data['id_user']);
+            $sql->bindParam(':id_game', $data['id_game']);
+            $sql->bindParam(':nickname', $data['nickname']);
+            $sql->execute();
+            include '../Bdd/deconnexion.php';
+            return array('status'=>'success');
+        }
+        catch (Exception $e){
+            $error = $e->getCode();
+            $errorMessage = $e->getMessage();
+
+            if ($error == "23000"){
+                if (strpos($errorMessage, 'id_user')) {
+                    return array('status'=>'error', 'error' => 'id_user');
+                }
+                elseif (strpos($errorMessage, 'id_game')) {
+                    return array('status'=>'error', 'error' => 'id_game');
+                }
+                else if (strpos($errorMessage, 'nickname')) {
+                    return array('status'=>'error', 'error' => 'nickname');
+                }
+            }
+        }
+    }
+
+    function updateNickname($data){
+        try{
+            include 'connexion_white.php';
+
+            $sql = $bdd->prepare("UPDATE nickname_user_game SET nickname = :nickname WHERE id_user = :id_user AND id_game = :id_game");
+            $sql->bindParam(':id_user', $data['id_user']);
+            $sql->bindParam(':id_game', $data['id_game']);
+            $sql->bindParam(':nickname', $data['nickname']);
+            $sql->execute();
+            include '../Bdd/deconnexion.php';
+            return array('status'=>'success');
+        }
+        catch (Exception $e){
+            $error = $e->getCode();
+            $errorMessage = $e->getMessage();
+
+            if ($error == "23000"){
+                if (strpos($errorMessage, 'id_user')) {
+                    return array('status'=>'error', 'error' => 'id_user');
+                }
+                elseif (strpos($errorMessage, 'id_game')) {
+                    return array('status'=>'error', 'error' => 'id_game');
+                }
+                else if (strpos($errorMessage, 'nickname')) {
+                    return array('status'=>'error', 'error' => 'nickname');
+                }
+            }
+        }
+    }
 }

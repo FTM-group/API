@@ -4,7 +4,7 @@ class Score
 {
     function addScore($data){
         try{
-            include 'Bdd/connexion_user.php';
+            include '../Bdd/connexion_user.php';
 
             $sql = $bdd->prepare("INSERT INTO score(scoring, id_user_target, id_matchmaking_archive, id_user_maker) VALUES (:scoring, :id_user_target, :id_matchmaking_archive, :id_user_maker)");
             $sql->bindParam(':name_genre', $data['scoring']);
@@ -13,7 +13,7 @@ class Score
             $sql->bindParam(':name_genre', $data['id_user_maker']);
             $sql->execute();
 
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             return array('status'=>'success');
         }
@@ -40,7 +40,7 @@ class Score
 
     function getScore($id_user){
         try{
-            include 'Bdd/connexion_user.php';
+            include '../Bdd/connexion_user.php';
 
             $sql = $bdd->prepare("SELECT AVG(scoring) as scoring, COUNT(id_score) as nb WHERE id_user = :id_user");
             $sql->bindParam(':id_user', $id_user);
@@ -48,7 +48,7 @@ class Score
 
             $result = $sql->fetch();
 
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             return array('status'=>'success', 'data' => $result);
         }

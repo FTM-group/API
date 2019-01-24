@@ -1,16 +1,16 @@
 <?php
 
 class Genre{
-    function getOne($id){
+    function getOne($idGenre){
         try{
-            include 'Bdd/connexion.php';
+            include '../Bdd/connexion.php';
 
             $sql = $bdd->prepare("SELECT id_genre, name_genre FROM genre WHERE id_genre = :id_genre");
-            $sql->bindParam(':id_genre', $id);
+            $sql->bindParam(':id_genre', $idGenre);
             $sql->execute();
 
             $results = $sql->fetch();
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             if ($results){
                 $return = array();
@@ -21,10 +21,10 @@ class Genre{
                     );
                 }
 
-                return json_encode(array('status'=>'success', 'data' => $return));
+                return array('status'=>'success', 'data' => $return);
             }
             else{
-                return json_encode(array('status'=>'empty'));
+                return array('status'=>'empty');
             }
         }
         catch(Exception $e){
@@ -44,13 +44,13 @@ class Genre{
 
     function getAll() {
         try{
-            include 'Bdd/connexion.php';
+            include '../Bdd/connexion.php';
 
             $sql = $bdd->prepare("SELECT id_genre, name_genre FROM genre");
             $sql->execute();
 
             $results = $sql->fetchAll();
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             if ($results){
                 $return = array();
@@ -61,10 +61,10 @@ class Genre{
                     );
                 }
 
-                return json_encode(array('status'=>'success', 'data' => $return));
+                return array('status'=>'success', 'data' => $return);
             }
             else{
-                return json_encode(array('status'=>'empty'));
+                return array('status'=>'empty');
             }
         }
         catch(Exception $e){
@@ -84,13 +84,13 @@ class Genre{
 
     function addGenre($data){
         try{
-            include 'Bdd/connexion_user.php';
+            include '../Bdd/connexion_user.php';
 
             $sql = $bdd->prepare("INSERT INTO genre(name_genre) VALUES (:name_genre)");
             $sql->bindParam(':name_genre', $data['name_genre']);
             $sql->execute();
 
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             return array('status'=>'success');
         }
@@ -106,16 +106,16 @@ class Genre{
         }
     }
 
-    function updateGenre($id, $data){
+    function updateGenre($idGenre, $data){
         try{
-            include 'Bdd/connexion_white.php';
+            include '../Bdd/connexion_white.php';
 
             $sql = $bdd->prepare("UPDATE genre SET name_genre = :name_genre WHERE id_genre = :id_genre");
             $sql->bindParam(':name_genre', $data['name_genre']);
-            $sql->bindParam(':id_genre', $id);
+            $sql->bindParam(':id_genre', $idGenre);
             $sql->execute();
 
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             return array('status'=>'success');
         }
@@ -134,15 +134,15 @@ class Genre{
         }
     }
 
-    function deleteGenre($id){
+    function deleteGenre($idGenre){
         try{
-            include 'Bdd/connexion_gold.php';
+            include '../Bdd/connexion_gold.php';
 
             $sql = $bdd->prepare("DELETE FROM genre WHERE id_genre = :id_genre");
-            $sql->bindParam(':id_genre', $id);
+            $sql->bindParam(':id_genre', $idGenre);
             $sql->execute();
 
-            include 'Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             return array('status'=>'success');
         }

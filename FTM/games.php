@@ -21,4 +21,14 @@ header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispo
         $gameProvider = new Game();
         echo json_encode($gameProvider->getHeadline());
     }
+    elseif(isset($_GET['last_games'])){
+        include_once '../Model/Game.php';
+        $gameProvider = new Game();
+        echo json_encode($gameProvider->getLastGamesWithNicknames($_GET['last_games']));
+    }
+    elseif(isset($_GET['games'])){
+        include_once '../Model/Game.php';
+        $gameProvider = new Game();
+        echo json_encode($gameProvider->getGamesWithNicknames($_GET['games']));
+    }
 ?>

@@ -7,7 +7,7 @@ class User{
         try{
             include '../Bdd/connexion.php';
 
-            $sql = $bdd->prepare("SELECT login_user, email_user FROM user WHERE login_user = :login AND password_user = :password_user");
+            $sql = $bdd->prepare("SELECT login_user, email_user, id_user FROM user WHERE login_user = :login AND password_user = :password_user");
             $sql->bindParam(':login', $login);
             $sql->bindParam(':password_user', $password);
             $sql->execute();
@@ -16,7 +16,7 @@ class User{
             include '../Bdd/deconnexion.php';
 
             if ($result){
-                return array('status'=>'success', 'user'=> array('login'=>$result['login_user'], 'email'=>$result['email_user']));
+                return array('status'=>'success', 'user'=> array('login'=>$result['login_user'], 'email'=>$result['email_user']), 'id_user' => $result['id_user']);
             }
             else{
                 return array('status'=>'empty');

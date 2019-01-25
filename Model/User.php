@@ -128,10 +128,10 @@ class User{
         include '../Bdd/deconnexion.php';
 
         if ($result){
-            return array('user' => $result['id_user']);
+            return array('status' => 'success');
         }
         else{
-            return null;
+            return array('status' => 'emtpy');
         }
     }
 

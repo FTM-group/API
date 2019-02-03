@@ -1,12 +1,12 @@
 <?php
 
 class Genre{
-    function getOne($idGenre){
+    function getOne($id){
         try{
             include '../Bdd/connexion.php';
 
             $sql = $bdd->prepare("SELECT id_genre, name_genre FROM genre WHERE id_genre = :id_genre");
-            $sql->bindParam(':id_genre', $idGenre);
+            $sql->bindParam(':id_genre', $id);
             $sql->execute();
 
             $results = $sql->fetch();
@@ -14,17 +14,17 @@ class Genre{
 
             if ($results){
                 $return = array();
-                foreach ($results as $value){
+                foreach ($results as $value){   
                     $return[] = array(
                         'id_genre' => $value['id_genre'],
                         'name_genre' => $value['name_genre'],
                     );
                 }
 
-                return array('status'=>'success', 'data' => $return);
+                return json_encode(array('status'=>'success', 'data' => $return));
             }
             else{
-                return array('status'=>'empty');
+                return json_encode(array('status'=>'empty'));
             }
         }
         catch(Exception $e){
@@ -61,10 +61,10 @@ class Genre{
                     );
                 }
 
-                return array('status'=>'success', 'data' => $return);
+                return json_encode(array('status'=>'success', 'data' => $return));
             }
             else{
-                return array('status'=>'empty');
+                return json_encode(array('status'=>'empty'));
             }
         }
         catch(Exception $e){
@@ -106,13 +106,13 @@ class Genre{
         }
     }
 
-    function updateGenre($idGenre, $data){
+    function updateGenre($id, $data){
         try{
             include '../Bdd/connexion_white.php';
 
             $sql = $bdd->prepare("UPDATE genre SET name_genre = :name_genre WHERE id_genre = :id_genre");
             $sql->bindParam(':name_genre', $data['name_genre']);
-            $sql->bindParam(':id_genre', $idGenre);
+            $sql->bindParam(':id_genre', $id);
             $sql->execute();
 
             include '../Bdd/deconnexion.php';
@@ -134,12 +134,12 @@ class Genre{
         }
     }
 
-    function deleteGenre($idGenre){
+    function deleteGenre($id){
         try{
             include '../Bdd/connexion_gold.php';
 
             $sql = $bdd->prepare("DELETE FROM genre WHERE id_genre = :id_genre");
-            $sql->bindParam(':id_genre', $idGenre);
+            $sql->bindParam(':id_genre', $id);
             $sql->execute();
 
             include '../Bdd/deconnexion.php';

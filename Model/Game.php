@@ -490,40 +490,48 @@ class Game{
                 $sql->bindParam(':id_thumbnail', $thumbnail['last_id']);
                 $sql->execute();
                 $lastId = $bdd->lastInsertId();
+                $lastId = intval($lastId);
+                var_dump($lastId);
 
                 include '../Bdd/deconnexion.php';
 
                 try{
+                    // Ajouts & Modifs #Nicolas 
+
                     $sql_insert = "";
-                    foreach ($data['genres_game'] as $key => $value){
-                        $sql_insert .= "(:id_genre".$key.", :id_game".$key.")";
-                    }
+
+                    // foreach ($data['genres_game'] as $key => $value){
+                    //     $sql_insert .= "(:id_genre".$value.", :id_game".$value.")";
+                    // }
+                    // var_dump($sql_insert);
 
                     include '../Bdd/connexion_user.php';
 
-                    $sql = $bdd->prepare('INSERT INTO game_genre (id_genre, id_game) VALUES '.$sql_insert);
+                    $sql = $bdd->prepare('INSERT INTO game_genre (id_genre, id_game) VALUES (:id_genre, :id_game)');
                     foreach ($data['genres_game'] as $key => $value){
-                        $sql->bindParam(':id_genre'.$key, $value);
-                        $sql->bindParam(':id_game'.$key, $lastId);
+                        $sql->bindParam(':id_genre', $value);
+                        $sql->bindParam(':id_game', $lastId);
+                        $sql->execute();
                     }
-                    $sql->execute();
+                    // $sql->execute();
 
                     include '../Bdd/deconnexion.php';
 
                     try{
                         $sql_insert = "";
-                        foreach ($data['nb_max_players_game'] as $key => $value){
-                            $sql_insert .= "(:game_nb_max_players".$key.", :id_game".$key.")";
-                        }
-
+                        // foreach ($data['nb_max_players_game'] as $key => $value){
+                        //     $sql_insert .= "(:game_nb_max_players".$key.", :id_game".$value.")";
+                        // }
+                        // var_dump($sql_insert);
                         include '../Bdd/connexion_user.php';
 
-                        $sql = $bdd->prepare('INSERT INTO game_nb_max_players (game_nb_max_players, id_game) VALUES '.$sql_insert);
+                        $sql = $bdd->prepare('INSERT INTO game_nb_max_players (game_nb_max_players, id_game) VALUES (:game_nb_max_players, :id_game)');
                         foreach ($data['nb_max_players_game'] as $key => $value){
-                            $sql->bindParam(':game_nb_max_players'.$key, $value);
-                            $sql->bindParam(':id_game'.$key, $lastId);
+                            $sql->bindParam(':game_nb_max_players', $value);
+                            $sql->bindParam(':id_game', $lastId);
+                            $sql->execute();
                         }
-                        $sql->execute();
+                        // $sql->execute();
 
                         include '../Bdd/deconnexion.php';
 

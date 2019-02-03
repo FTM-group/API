@@ -2,11 +2,11 @@
 
 class Thumbnail {
     function addThumbnail($file){
-        $urlForThumbnail = $this->getUrlForThumbnail($file['name']);
+        $urlForThumbnail = $this->getUrlForThumbnail( $_FILES['thumbnail']['name']);
         $uploadFile = $urlForThumbnail['upload_file'];
         $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
-        if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
+        if (move_uploaded_file( $_FILES['thumbnail']['tmp_name'], $uploadFile)) {
             $weight = $file['size'] / 1000;
 
             try{
@@ -50,14 +50,14 @@ class Thumbnail {
 
             include_once '../Bdd/deconnexion.php';
             if($result){
-                $urlForThumbnail = $this->getUrlForThumbnail($file['name']);
+                $urlForThumbnail = $this->getUrlForThumbnail($_FILES['thumbnail']['name']);
                 $uploadFile = $urlForThumbnail['upload_file'];
                 $nameThumbnail = $urlForThumbnail['name_thumbnail'];
 
                 if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
                     include '../Bdd/connexion_white.php';
 
-                    $weight = $file['size'] / 1000;
+                    $weight = $_FILES['thumbnail']['size'] / 1000;
 
                     if (@unlink($this->getUrlForThumbnail().$result['name_thumbnail'])){
                         try{

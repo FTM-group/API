@@ -108,10 +108,11 @@ class Game{
 
             $results = $sql->fetchAll();
             include '../Bdd/deconnexion.php';
+            // var_dump($results);
 
             if ($results){
                 try{
-                    $return = array();
+                    $returnTab = array();
                     foreach ($results as $result){
                         include('../Bdd/connexion.php');
 
@@ -123,16 +124,19 @@ class Game{
                         $sql->execute();
 
                         $genresTab = $sql->fetchAll();
+                        // var_dump($genresTab);
                         include '../Bdd/deconnexion.php';
 
-                        if ($genresTab){
+                        // if (!empty($genresTab))
+                        if (isset($genresTab)){
                             $genres = array();
                             foreach ($genresTab as $value){
-                                $genres[] = array(
+                                $genres = array(
                                     'id_genre' => $value['id_genre'],
                                     'name_genre' => $value['name_genre']
                                 );
                             }
+                            // var_dump($genres);
                         }
                         else{
                             return array('status'=>'empty_genres');
@@ -149,7 +153,7 @@ class Game{
                         $nbPlayersTab = $sql->fetchAll();
                         include '../Bdd/deconnexion.php';
 
-                        if ($nbPlayersTab){
+                        if (isset($nbPlayersTab)){
                             $nbPlayers = array();
                             foreach ($nbPlayersTab as $value){
                                 $nbPlayers[] = array(
@@ -161,20 +165,21 @@ class Game{
                             return array('status'=>'empty_nb_max_players');
                         }
 
-                        $return[] = array(
-                            'id_game' => $result['id_game'],
-                            'name_game' => $result['name_game'],
-                            'date_add_game' => $result['date_add_game'],
-                            'headline_game' => $result['headline_game'],
-                            'on_off_game' => $result['on_off_game'],
-                            'id_thumbnail' => $result['id_thumbnail'],
+                        $tab = array(
+                            'id_game'        => $result['id_game'],
+                            'name_game'      => $result['name_game'],
+                            'date_add_game'  => $result['date_add_game'],
+                            'headline_game'  => $result['headline_game'],
+                            'on_off_game'    => $result['on_off_game'],
+                            'id_thumbnail'   => $result['id_thumbnail'],
                             'name_thumbnail' => $result['name_thumbnail'],
-                            'genres' => $genres,
-                            'nb_players' => $nbPlayers,
+                            'genres'         => $genres,
+                            'nb_players'     => $nbPlayers,
                         );
+                        array_push($returnTab, $tab);
                     }
-                    return array('status'=>'success', 'games'=> $return);
-
+                    // var_dump($returnTab);
+                    return array('status'=>'success', 'games'=> $returnTab);
                 }
                 catch(Exception $e){
                     return array('status'=>'error_genres');

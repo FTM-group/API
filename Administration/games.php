@@ -14,6 +14,14 @@ if (isset($_POST['switch']) && isset($_POST['id'])){
     echo json_encode($gameProvider->onOffGame($_POST['id']));
 }
 
+// getAll - AJOUT nicolas
+elseif(isset($_GET['getall'])){
+    include_once '../Model/Game.php';
+    $gameProvider = new Game();
+
+    echo json_encode($gameProvider->getAll());
+}
+
 // get oneGame (modal)
 elseif(isset($_GET['update']) && isset($_GET['id'])){
     include_once '../Model/Game.php';

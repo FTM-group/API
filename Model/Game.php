@@ -896,11 +896,78 @@ class Game{
 
             $results = $sql->fetchAll();
 
-            var_dump($results);
             include '../Bdd/deconnexion.php';
 
             if ($results){
-                return array('status'=>'success', 'data' => $results);
+                try{
+                    $return = array();
+                    foreach ($results as $result){
+                        include('../Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT GEN.id_genre, name_genre 
+                                          FROM genre GEN 
+                                          JOIN game_genre GG ON GEN.id_genre = GG.id_genre 
+                                          WHERE GG.id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $genresTab = $sql->fetchAll();
+                        include '../Bdd/deconnexion.php';
+
+                        if ($genresTab){
+                            $genres = array();
+                            foreach ($genresTab as $value){
+                                $genres[] = array(
+                                    'id_genre' => $value['id_genre'],
+                                    'name_genre' => $value['name_genre']
+                                );
+                            }
+                        }
+                        else{
+                            return array('status'=>'empty_genres');
+                        }
+
+                        include('../Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT game_nb_max_players
+                                          FROM game_nb_max_players 
+                                          WHERE id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $nbPlayersTab = $sql->fetchAll();
+                        include '../Bdd/deconnexion.php';
+
+                        if ($nbPlayersTab){
+                            $nbPlayers = array();
+                            foreach ($nbPlayersTab as $value){
+                                $nbPlayers[] = array(
+                                    'nb_players' => $value['game_nb_max_players']
+                                );
+                            }
+                        }
+                        else{
+                            return array('status'=>'empty_nb_max_players');
+                        }
+
+                        $return[] = array(
+                            'id_game' => $result['id_game'],
+                            'name_game' => $result['name_game'],
+                            'date_add_game' => $result['date_add_game'],
+                            'headline_game' => $result['headline_game'],
+                            'on_off_game' => $result['on_off_game'],
+                            'id_thumbnail' => $result['id_thumbnail'],
+                            'name_thumbnail' => $result['name_thumbnail'],
+                            'genres' => $genres,
+                            'nb_players' => $nbPlayers,
+                        );
+                    }
+                    return array('status'=>'success', 'games'=> $return);
+
+                }
+                catch(Exception $e){
+                    return array('status'=>'error_genres');
+                }
             }
             else{
                 return array('status'=>'empty');
@@ -929,7 +996,75 @@ class Game{
             include '../Bdd/deconnexion.php';
 
             if ($results){
-                return array('status'=>'success', 'data' => $results);
+                try{
+                    $return = array();
+                    foreach ($results as $result){
+                        include('../Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT GEN.id_genre, name_genre 
+                                          FROM genre GEN 
+                                          JOIN game_genre GG ON GEN.id_genre = GG.id_genre 
+                                          WHERE GG.id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $genresTab = $sql->fetchAll();
+                        include '../Bdd/deconnexion.php';
+
+                        if ($genresTab){
+                            $genres = array();
+                            foreach ($genresTab as $value){
+                                $genres[] = array(
+                                    'id_genre' => $value['id_genre'],
+                                    'name_genre' => $value['name_genre']
+                                );
+                            }
+                        }
+                        else{
+                            return array('status'=>'empty_genres');
+                        }
+
+                        include('../Bdd/connexion.php');
+
+                        $sql = $bdd->prepare("SELECT game_nb_max_players
+                                          FROM game_nb_max_players 
+                                          WHERE id_game = :id_game");
+                        $sql->bindParam(':id_game', $result['id_game']);
+                        $sql->execute();
+
+                        $nbPlayersTab = $sql->fetchAll();
+                        include '../Bdd/deconnexion.php';
+
+                        if ($nbPlayersTab){
+                            $nbPlayers = array();
+                            foreach ($nbPlayersTab as $value){
+                                $nbPlayers[] = array(
+                                    'nb_players' => $value['game_nb_max_players']
+                                );
+                            }
+                        }
+                        else{
+                            return array('status'=>'empty_nb_max_players');
+                        }
+
+                        $return[] = array(
+                            'id_game' => $result['id_game'],
+                            'name_game' => $result['name_game'],
+                            'date_add_game' => $result['date_add_game'],
+                            'headline_game' => $result['headline_game'],
+                            'on_off_game' => $result['on_off_game'],
+                            'id_thumbnail' => $result['id_thumbnail'],
+                            'name_thumbnail' => $result['name_thumbnail'],
+                            'genres' => $genres,
+                            'nb_players' => $nbPlayers,
+                        );
+                    }
+                    return array('status'=>'success', 'games'=> $return);
+
+                }
+                catch(Exception $e){
+                    return array('status'=>'error_genres');
+                }
             }
             else{
                 return array('status'=>'empty');

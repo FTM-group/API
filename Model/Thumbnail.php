@@ -17,7 +17,7 @@ class Thumbnail {
                 $sql->bindParam(':weight_thumbnail', $weight);
                 $sql->execute();
                 $lastId = $bdd->lastInsertId();
-                include_once '../Bdd/deconnexion.php';
+                include '../Bdd/deconnexion.php';
 
                 return array('status' => 'success', 'last_id' => $lastId);
             }
@@ -48,7 +48,7 @@ class Thumbnail {
             $sql->execute();
             $result = $sql->fetch();
 
-            include_once '../Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
             if($result){
                 $urlForThumbnail = $this->getUrlForThumbnail($file['name']);
                 $uploadFile = $urlForThumbnail['upload_file'];
@@ -67,7 +67,7 @@ class Thumbnail {
                             $sql->bindParam(':id_thumbnail', $idThumbnail);
                             $sql->execute();
 
-                            include_once '../Bdd/deconnexion.php';
+                            include '../Bdd/deconnexion.php';
 
                             return array('status' => 'success');
                         }

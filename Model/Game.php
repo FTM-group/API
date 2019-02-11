@@ -577,7 +577,7 @@ class Game{
             $sql->execute();
 
 
-            include_once '../Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             try{
                 $toDelete = array();
@@ -600,7 +600,7 @@ class Game{
                     }
                 }
 
-                include_once '../Bdd/deconnexion.php';
+                include '../Bdd/deconnexion.php';
 
                 try{
                     $sql_delete = "";
@@ -624,7 +624,7 @@ class Game{
                     }
                     $sql->execute();
 
-                    include_once '../Bdd/deconnexion.php';
+                    include '../Bdd/deconnexion.php';
 
                     try{
                         $sql_add = "";
@@ -648,7 +648,7 @@ class Game{
                         }
                         $sql->execute();
 
-                        include_once '../Bdd/deconnexion.php';
+                        include '../Bdd/deconnexion.php';
 
                         if ($file){
                             include_once '../Model/Thumbnail.php';
@@ -717,7 +717,7 @@ class Game{
             $sql->execute();
             $result = $sql->fetch();
 
-            include_once '../Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             if ($result['on_off_game'] == 1){
                 $onOffGame = 0;
@@ -734,7 +734,7 @@ class Game{
                 $sql->bindParam(':id_game', $idGame);
                 $sql->execute();
 
-                include_once '../Bdd/deconnexion.php';
+                include '../Bdd/deconnexion.php';
 
                 return array('status' => 'success');
             }
@@ -770,7 +770,7 @@ class Game{
             $sql->execute();
             $result = $sql->fetch();
 
-            include_once '../Bdd/deconnexion.php';
+            include '../Bdd/deconnexion.php';
 
             if ($result['headline_game'] == 1){
                 $headlineGame = 0;
@@ -787,7 +787,7 @@ class Game{
                 $sql->bindParam(':id_game', $idGame);
                 $sql->execute();
 
-                include_once '../Bdd/deconnexion.php';
+                include '../Bdd/deconnexion.php';
 
                 return array('status' => 'success');
             }

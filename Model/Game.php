@@ -884,10 +884,10 @@ class Game{
 
             $sql = $bdd->prepare("SELECT DISTINCT G.id_game, name_game, date_add_game, headline_game, on_off_game, G.id_thumbnail, name_thumbnail, nickname
                               FROM game G
-                              JOIN thumbnail T ON G.id_thumbnail = T.id_thumbnail
-                              JOIN nickname_user_game NUG ON NUG.id_game = G.id_game
-                              JOIN matchmaking_archive MA ON MA.id_game = G.id_game
-                              JOIN matchmaking_players_archive MPA ON MPA.id_matchmaking_archive = MA.id_matchmaking_archive
+                              LEFT JOIN thumbnail T ON G.id_thumbnail = T.id_thumbnail
+                              LEFT JOIN nickname_user_game NUG ON NUG.id_game = G.id_game
+                              LEFT JOIN matchmaking_archive MA ON MA.id_game = G.id_game
+                              LEFT JOIN matchmaking_players_archive MPA ON MPA.id_matchmaking_archive = MA.id_matchmaking_archive
                               WHERE MPA.id_user = :id_user 
                               ORDER BY MA.date_archive DESC 
                               LIMIT 10");
@@ -895,6 +895,8 @@ class Game{
             $sql->execute();
 
             $results = $sql->fetchAll();
+
+            var_dump($results);
             include '../Bdd/deconnexion.php';
 
             if ($results){
